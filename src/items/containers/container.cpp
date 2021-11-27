@@ -196,11 +196,12 @@ uint32_t Container::getWeight() const {
 }
 
 std::string Container::getContentDescription(bool oldProtocol) const {
-	std::ostringstream os;
-	return getContentDescription(os, oldProtocol).str();
+	std::string sink;
+	sink.reserve(1024);
+	return getContentDescription(sink);
 }
 
-std::ostringstream &Container::getContentDescription(std::ostringstream &os, bool oldProtocol) const {
+std::string &Container::getContentDescription(std::string &sink, bool oldProtocol) const {
 	bool firstitem = true;
 	for (ContainerIterator it = iterator(); it.hasNext(); it.advance()) {
 		Item* item = *it;
@@ -213,20 +214,20 @@ std::ostringstream &Container::getContentDescription(std::ostringstream &os, boo
 		if (firstitem) {
 			firstitem = false;
 		} else {
-			os << ", ";
+			sink.append(", ");
 		}
 
 		if (oldProtocol) {
-			os << item->getNameDescription();
+			sink.append(1, '{').append(item->getNameDescription()).append(1, '}');
 		} else {
-			os << "{" << item->getID() << "|" << item->getNameDescription() << "}";
+			sink.append(1, '{').append(std::to_string(static_cast<uint32_t>(item->getID()))).append(1, '|').append(item->getNameDescription()).append(1, '}');
 		}
 	}
 
 	if (firstitem) {
-		os << "nothing";
+		sink.append("nothing");
 	}
-	return os;
+	return sink;
 }
 
 Item* Container::getItemByIndex(size_t index) const {

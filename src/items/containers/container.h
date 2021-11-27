@@ -172,7 +172,7 @@ class Container : public Item, public Cylinder {
 		virtual void removeItem(Thing* thing, bool sendUpdateToClient = false);
 
 	protected:
-		std::ostringstream &getContentDescription(std::ostringstream &os, bool oldProtocol) const;
+		std::string &getContentDescription(std::string &sink, bool oldProtocol) const;
 
 		uint32_t maxSize;
 		uint32_t totalWeight = 0;
