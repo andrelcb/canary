@@ -861,7 +861,7 @@ void Monster::doAttacking(uint32_t interval) {
 		}
 
 		if (!inRange && spellBlock.isMelee) {
-			//melee swing out of reach
+			// melee swing out of reach
 			lastMeleeAttack = 0;
 		}
 	}
