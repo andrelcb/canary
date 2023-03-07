@@ -146,16 +146,16 @@ void Npc::manageIdle() {
 }
 
 void Npc::onPlayerAppear(Player* player) {
-	if (player->hasFlag(PlayerFlags_t::IgnoredByNpcs) || playerSpectators.contains(player)) {
+	if (player->hasFlag(PlayerFlags_t::IgnoredByNpcs) && std::find(playerSpectators.begin(), playerSpectators.end(), player) != playerSpectators.end()) {
 		return;
 	}
-	playerSpectators.insert(player);
+	playerSpectators.push_back(player);
 	manageIdle();
 }
 
 void Npc::onPlayerDisappear(Player* player) {
 	removePlayerInteraction(player);
-	if (!player->hasFlag(PlayerFlags_t::IgnoredByNpcs) && playerSpectators.contains(player)) {
+	if (!player->hasFlag(PlayerFlags_t::IgnoredByNpcs) && std::find(playerSpectators.begin(), playerSpectators.end(), player) != playerSpectators.end()) {
 		playerSpectators.erase(player);
 		manageIdle();
 	}
@@ -451,7 +451,7 @@ void Npc::onThinkWalk(uint32_t interval) {
 
 void Npc::onCreatureWalk() {
 	Creature::onCreatureWalk();
-	phmap::erase_if(playerSpectators, [this](const auto &creature) { return !this->canSee(creature->getPosition()); });
+	// phmap::erase_if(playerSpectators, [this](const auto &creature) { return !this->canSee(creature->getPosition()); });
 }
 
 void Npc::onPlacedCreature() {
@@ -459,11 +459,11 @@ void Npc::onPlacedCreature() {
 }
 
 void Npc::loadPlayerSpectators() {
-	SpectatorHashSet spec;
+	SpectatorVector spec;
 	g_game().map.getSpectators(spec, position, true, true);
 	for (auto creature : spec) {
 		if (creature->getPlayer() || creature->getPlayer()->hasFlag(PlayerFlags_t::IgnoredByNpcs)) {
-			playerSpectators.insert(creature);
+			playerSpectators.push_back(creature);
 		}
 	}
 }
