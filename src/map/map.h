@@ -31,7 +31,7 @@ static constexpr int8_t MAP_LAYER_VIEW_LIMIT = 2;
 struct FindPathParams;
 struct AStarNode {
 		AStarNode* parent;
-		int_fast32_t f;
+		int_fast32_t f, g, c;
 		uint16_t x, y;
 };
 
@@ -56,11 +56,18 @@ class AStarNodes {
 		static int_fast32_t getTileWalkCost(const Creature &creature, const Tile* tile);
 
 	private:
+#if defined(__SSE2__)
+		alignas(16) uint32_t nodesTable[MAX_NODES];
+		alignas(64) int32_t calculatedNodes[MAX_NODES];
 		AStarNode nodes[MAX_NODES];
-		bool openNodes[MAX_NODES];
-		phmap::flat_hash_map<uint32_t, AStarNode*> nodeTable;
+#else
+		AStarNode nodes[MAX_NODES];
+		uint32_t nodesTable[MAX_NODES];
+#endif
 		size_t curNode;
 		int_fast32_t closedNodes;
+		bool openNodes[MAX_NODES];
+		phmap::flat_hash_map<uint32_t, AStarNode*> nodeTable;
 };
 
 using SpectatorCache = std::map<Position, SpectatorVector>;

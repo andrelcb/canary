@@ -70,7 +70,7 @@ class SpectatorVector : private CreatureVector {
 			}
 		}
 
-		operator CreatureVector&() {
+		CreatureVector &getVector() {
 			return specs;
 		}
 
