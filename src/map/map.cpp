@@ -443,7 +443,8 @@ void Map::getSpectators(SpectatorHashSet &spectators, const Position &centerPos,
 	minRangeY = (minRangeY == 0 ? -maxViewportY : -minRangeY);
 	maxRangeY = (maxRangeY == 0 ? maxViewportY : maxRangeY);
 
-	int32_t minRangeZ = 0, maxRangeZ = MAP_MAX_LAYERS - 1;
+	int32_t minRangeZ;
+	int32_t maxRangeZ;
 	if (multifloor) {
 		if (centerPos.z > MAP_INIT_SURFACE_LAYER) {
 			minRangeZ = std::max(centerPos.z - MAP_LAYER_VIEW_LIMIT, 0);
@@ -461,11 +462,11 @@ void Map::getSpectators(SpectatorHashSet &spectators, const Position &centerPos,
 	if (it != cache.end()) {
 		spectators = it->second;
 		if (onlyPlayers) {
-			for (auto it = spectators.begin(); it != spectators.end();) {
-				if (!(*it)->getPlayer()) {
-					it = spectators.erase(it);
+			for (auto itSpec = spectators.begin(); itSpec != spectators.end();) {
+				if (!(*itSpec)->getPlayer()) {
+					itSpec = spectators.erase(itSpec);
 				} else {
-					++it;
+					++itSpec;
 				}
 			}
 		}
