@@ -586,9 +586,11 @@ bool Map::getPathMatching(const Creature &creature, std::forward_list<Direction>
 		Position start = creature.getPosition();
 		return getPathMatching(start, dirList, pathCondition, fpp);
 	} catch (const std::invalid_argument &e) {
-		SPDLOG_ERROR("An error occurred in the '[{}]' function: {}", __FUNCTION__, e.what());
+		SPDLOG_ERROR("Invalid argument in the '[{}]' function: {}", __FUNCTION__, e.what());
+		return false;
 	} catch (const std::exception &e) {
 		SPDLOG_ERROR("An unexpected error occurred in the '[{}]' function: {}", __FUNCTION__, e.what());
+		return false;
 	}
 }
 
@@ -767,9 +769,11 @@ bool Map::getPathMatching(const Position &start, std::forward_list<Direction> &d
 		}
 		return true;
 	} catch (const std::invalid_argument &e) {
-		SPDLOG_ERROR("An error occurred in the '[{}]' function: {}", __FUNCTION__, e.what());
+		SPDLOG_ERROR("Invalid argument in the '[{}]' function: {}", __FUNCTION__, e.what());
+		return false;
 	} catch (const std::exception &e) {
 		SPDLOG_ERROR("An unexpected error occurred in the '[{}]' function: {}", __FUNCTION__, e.what());
+		return false;
 	}
 }
 
