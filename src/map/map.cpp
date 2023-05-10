@@ -398,7 +398,7 @@ void Map::getSpectatorsInternal(SpectatorHashSet &spectators, const Position &ce
 
 	const QTreeLeafNode* startLeaf = QTreeNode::getLeafStatic<const QTreeLeafNode*, const QTreeNode*>(&root, startx1, starty1);
 	const QTreeLeafNode* leafS = startLeaf;
-	const QTreeLeafNode* leafE = startLeaf;
+	const QTreeLeafNode* leafE;
 
 	auto inRange = [&](const Position &pos) {
 		int_fast16_t offsetZ = Position::getOffsetZ(centerPos, pos);
@@ -406,10 +406,8 @@ void Map::getSpectatorsInternal(SpectatorHashSet &spectators, const Position &ce
 	};
 
 	auto insertIfInRange = [&](Creature* creature) {
-		if (creature != nullptr) {
-			if (inRange(creature->getPosition())) {
-				spectators.insert(creature);
-			}
+		if (creature != nullptr && inRange(creature->getPosition())) {
+			spectators.insert(creature);
 		}
 	};
 
@@ -830,7 +828,7 @@ AStarNode* AStarNodes::getBestNode() {
 	}
 
 	if (!bestNodes.empty()) {
-		return *std::min_element(bestNodes.begin(), bestNodes.end(), [](const AStarNode* a, const AStarNode* b) {
+		return *std::ranges::min_element(bestNodes.begin(), bestNodes.end(), [](const AStarNode* a, const AStarNode* b) {
 			return a->f < b->f;
 		});
 	}
