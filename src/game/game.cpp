@@ -5500,7 +5500,7 @@ void Game::sendSingleSoundEffect(const Position &pos, SoundEffect_t soundId, Cre
 		return;
 	}
 
-	SpectatorHashSet spectators;
+	SpectatorVector spectators;
 	map.getSpectators(spectators, pos, false, true);
 	for (Creature* spectator : spectators) {
 		if (Player* tmpPlayer = spectator->getPlayer()) {
@@ -5524,7 +5524,7 @@ void Game::sendDoubleSoundEffect(const Position &pos, SoundEffect_t mainSoundEff
 		return;
 	}
 
-	SpectatorHashSet spectators;
+	SpectatorVector spectators;
 	map.getSpectators(spectators, pos, false, true);
 	for (Creature* spectator : spectators) {
 		if (Player* tmpPlayer = spectator->getPlayer()) {
@@ -7041,7 +7041,7 @@ void Game::updatePlayerHelpers(Player* player) {
 
 	uint16_t helpers = player->getHelpers();
 
-	SpectatorHashSet spectators;
+	SpectatorVector spectators;
 	map.getSpectators(spectators, player->getPosition(), true, true);
 	for (Creature* spectator : spectators) {
 		if (!spectator || !spectator->getPlayer()) {

@@ -402,7 +402,7 @@ int GameFunctions::luaGameCreateMonster(lua_State* L) {
 	if (g_game().placeCreature(monster, position, extended, force)) {
 		auto mtype = monster->getMonsterType();
 		if (mtype && mtype->info.bossRaceId > 0 && mtype->info.bosstiaryRace == BosstiaryRarity_t::RARITY_ARCHFOE) {
-			SpectatorHashSet spectators;
+			SpectatorVector spectators;
 			g_game().map.getSpectators(spectators, monster->getPosition(), true);
 			for (Creature* spectator : spectators) {
 				if (Player* tmpPlayer = spectator->getPlayer()) {

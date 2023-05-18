@@ -198,7 +198,7 @@ uint32_t Container::getWeight() const {
 std::string Container::getContentDescription(bool oldProtocol) const {
 	std::string sink;
 	sink.reserve(1024);
-	return getContentDescription(sink);
+	return getContentDescription(sink, oldProtocol);
 }
 
 std::string &Container::getContentDescription(std::string &sink, bool oldProtocol) const {
