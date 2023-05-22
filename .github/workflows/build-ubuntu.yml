@@ -40,7 +40,7 @@ jobs:
 
       - name: Switch to gcc-13
         run: |
-           echo "deb http://cz.archive.ubuntu.com/ubuntu lunar main universe" | sudo tee -a /etc/apt/sources.list
+          echo "deb http://cz.archive.ubuntu.com/ubuntu lunar main universe" | sudo tee -a /etc/apt/sources.list
           sudo apt update
           sudo apt install gcc-13 g++-13
           sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 --slave /usr/bin/g++ g++ /usr/bin/g++-13 --slave /usr/bin/gcov gcov /usr/bin/gcov-13
